@@ -8,6 +8,9 @@ import requests
 import yaml
 from _pytest.skipping import Skip
 
+from Lixiang_Shebian.util.yaml_util import write_yaml, read_yaml_case, read_yaml, clear_yaml, clear_yaml_by_key, \
+    write_yaml_by_key
+
 
 class Test:
 
@@ -20,7 +23,10 @@ class Test:
         assert response.json()['msg'] == 'SUCCESS'
         print(response.json())
         Test.id = response.json()['data']['id']
+        clear_yaml_by_key("id")
+        write_yaml({"id": Test.id})
         print('请求url：' + url)
+        write_yaml({"url": url})
 
     @Skip
     def test_demo2(self):
@@ -37,25 +43,26 @@ class Test:
         Test.newToken = Test.token_type + ' ' + Test.access_token
         print(Test.newToken)
 
-    def test_demo3(self):
-        json_str = '{"name": "John", "age": 30, "city": "New York"}'
+    # @pytest.mark.parametrize("caseinfo", read_yaml("extract.yaml"))
+    # def test_demo3(self):
 
-        # 将字符串类型转换为JSON类型
-        json_data = json.loads(json_str)
+    # clear_yaml()
+    #
+    # json_str = '{"name": "John", "age": 1000, "city": "New York"}'
+    #
+    # # 将字符串类型转换为JSON类型
+    # json_data = json.loads(json_str)
 
-        # 输出JSON数据
-        print(json_data)
+    # print('.....................')
+    # json_json = {"name": "John", "age": 30, "city": "New York"}
+    # # 将JSON类型转换为字符串类型
+    # string_data = json.dumps(json_json)
+    # carId = read_yaml("data")
+    # print("车型id：{}".format(carId))
+    # clear_yaml_by_key("data")
 
-        print('.....................')
-
-        json_json = {"name": "John", "age": 30, "city": "New York"}
-        # 将JSON类型转换为字符串类型
-        string_data = json.dumps(json_json)
-
-        print(string_data)
 
 def Moon():
-
     # path = os.getcwd()
     # print(path)
     # i = list("ASDFGHJKLTYUIOPVBNMGHJK")
@@ -70,32 +77,8 @@ def Moon():
     print(random_letters)
 
 
-# 写入
-def write_yaml(data):
-    with open("Lixiang_Shebian.extract", encoding="utf-8", mode="a+") as f:
-        yaml.dump(data, stream=f, allow_unicode=True)
-
-
-# 读取
-def read_yaml(key):
-    with open("Lixiang_Shebian.extract", encoding="utf-8", mode="r") as f:
-        value=yaml.load(f, yaml.FullLoader)
-        return value[key]
-
-
-# 清除
-def clear_yaml():
-    with open("Lixiang_Shebian.extract", encoding="utf-8", mode="w") as f:
-        f.truncate()
-
-
-# 读取用例
-def read_case(case_path):
-    with open(os.getcwd() + "/" + case_path, encoding="utf-8", mode="r") as f:
-        value = yaml.load(f, yaml.FullLoader)
-        return value
-
-
 if __name__ == '__main__':
     # 解析测试配置文件并运行测试用例
     pytest.main(['-vs', 'test_test'])
+
+

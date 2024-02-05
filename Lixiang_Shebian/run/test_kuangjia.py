@@ -6,7 +6,7 @@ import pytest
 import requests
 from pip._internal.network import session
 
-from Lixiang_Shebian.commons.yaml_util import write_yaml, read_yaml, read_yaml_case
+from Lixiang_Shebian.util.yaml_util import write_yaml, read_yaml, read_yaml_case
 
 
 # lst = ['a', 'b', 'c','d','e','f']
